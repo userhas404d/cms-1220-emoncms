@@ -9,4 +9,5 @@ def repost(ctx, apikey, json, node, host):
     """Repost CMS REST call."""
     url = ("http://" + host + "/emoncms/input/post?node=" + node + "&json="
            + json + "&apikey=" + apikey)
-    requests.get(url)
+    response = requests.get(url)
+    print(response)
