@@ -3,7 +3,7 @@ GET request rewriter for Brultech CMS 1220
 
 ## Overview
 
- As written the current firmware of the CMS-1220 (v4.20) does not send a properly formatted GET request to the EmonCMS instance. This project aims to correct that.
+ My CMS-1220 refuses to send data to my EmonCMS instance. This project aims to proactively poll the CMS-1220 for said data.
 
 ## PreReqs
 A properly configured EmonCMS instance (tested with [emonpi](https://github.com/openenergymonitor/emonpi) via [emonsd](https://github.com/openenergymonitor/emonpi/wiki/emonSD-pre-built-SD-card-Download-&-Change-Log))
@@ -24,7 +24,7 @@ Configure GEM device with EmonCMS Packet Format (Format #10)
 Under "Data Post" fill out the following:
 
 - URL Address: RPi IP Address (eg. 192.168.2.222)
-- URL Extension: /webhook/cms1220 << different from original
+- URL Extension: /emoncms/input/post.json
 - Token: Read & Write Input API Token
 - Note: If using the Device Module in the original Post, use the same Node Name you defined in Device Setup.
 - The rest aren't used.
@@ -51,43 +51,4 @@ Configure emonpi for write operations
 
 ```
 rpi-rw
-```
-
-Install [captainwebhook](https://github.com/skorokithakis/captainwebhook) (requires at python 2.7+)
-```
-pip install captainwebhook
-```
-
-Run captainwebhook and set it to auto-start
-
-```
-cptwebhook "echo {apikey} {node} {json}" -p 8282 -i 0.0.0.0 --template
-```
-
-Add the required apache2 modules to allow for the use of a reverse proxy
-
-```
-a2enmod proxy
-a2enmod proxy_http
-a2enmod proxy_ajp
-a2enmod rewrite
-a2enmod deflate
-a2enmod headers
-a2enmod proxy_balancer
-a2enmod proxy_connect
-a2enmod proxy_html
-```
-
-Edit `/etc/apache2/sites-enabled/000-default.conf` to include a reverse proxy by adding these lines between the `VirtualHost` tags
-
-```
-ProxyPreserveHost On
-ProxyPass /webhook/brultech http://0.0.0.0:8282/webhook/cms-1220/
-ProxyPassReverse /webhook/brultech http://0.0.0.0:8282/webhook/cms-1220/
-```
-
-Restart apache
-
-```
-service apache2 restart
 ```
