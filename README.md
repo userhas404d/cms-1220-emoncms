@@ -32,7 +32,6 @@ Under "Data Post" fill out the following:
 
 On the EmonCMS instance:
 ```
-
 Create the GEM device:
 
 1. Go to Setup -> Device Setup in EmonCMS.

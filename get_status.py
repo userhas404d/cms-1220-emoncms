@@ -3,6 +3,8 @@
 # TODO: - add tests
 #       - make sure info is actually getting posted
 
+import codecs
+
 import urllib3
 
 BRULTECH_DEVICE = "192.168.2.5"
@@ -26,12 +28,13 @@ def find_between(s, first, last):
 def get_btinfo(btdev_ip):
     """Return device information."""
     url = "http://" + btdev_ip + "/4?SPK=Show+Packet"
-    return http.request('GET', url, retries=10)
+    return http.request('GET', url, preload_content=False)
 
 
 def decode_reponse(response):
     """Return utf-8 string."""
-    return response.data.decode("utf-8", "ignore")
+    reader = codecs.getreader('utf-8')
+    return reader(response.data)
 
 
 def get_new_request(response, first, last):
