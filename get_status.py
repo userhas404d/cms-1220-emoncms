@@ -34,7 +34,9 @@ def get_btinfo(btdev_ip):
 def decode_reponse(response):
     """Return utf-8 string."""
     reader = codecs.getreader('utf-8')
-    return reader(response.data)
+    # Don't really care about this next line, just trying to use the buffer API
+    reader(response)
+    return response.data.decode("utf-8", "ignore")
 
 
 def get_new_request(response, first, last):
@@ -53,6 +55,7 @@ def all_the_things(btdev_ip, emoncms_ip):
     """Put it all together."""
     response = get_btinfo(btdev_ip)
     decoded_reponse = decode_reponse(response)
+    response.release_conn()
     updated_response = get_new_request(decoded_reponse, first, last)
     post_to_emoncms(emoncms_ip, updated_response)
 
