@@ -1,9 +1,9 @@
 # cms-1220-emoncms
-GET request rewriter for Brultech CMS 1220
+Active data pull from Brultech CMS 1220 via HTTP GET requests
 
 ## Overview
 
- My CMS-1220 refuses to send data to my EmonCMS instance. This project aims to proactively poll the CMS-1220 for said data.
+My CMS-1220 refuses to send data to my EmonCMS instance. This project aims to fix that.
 
 ## PreReqs
 A properly configured EmonCMS instance (tested with [emonpi](https://github.com/openenergymonitor/emonpi) via [emonsd](https://github.com/openenergymonitor/emonpi/wiki/emonSD-pre-built-SD-card-Download-&-Change-Log))
@@ -51,3 +51,14 @@ Configure emonpi for write operations
 ```
 rpi-rw
 ```
+
+Clone this repo and run get_status.sh
+
+```
+git clone https://github.com/userhas404d/cms-1220-emoncms.git
+cd cms-1220-emoncms
+sudo chmod +x get_status.sh
+./get_status.sh
+```
+
+`get_status.sh` should run 'forever' and pull data from the cms-1220 and push it to the EmonCMS every 20 seconds.
