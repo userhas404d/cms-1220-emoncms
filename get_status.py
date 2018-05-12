@@ -28,14 +28,11 @@ def find_between(s, first, last):
 def get_btinfo(btdev_ip):
     """Return device information."""
     url = "http://" + btdev_ip + "/4?SPK=Show+Packet"
-    return http.request('GET', url, preload_content=False)
+    return http.request('GET', url, preload_content=False, retries=20)
 
 
 def decode_reponse(response):
     """Return utf-8 string."""
-    reader = codecs.getreader('utf-8')
-    # Don't really care about this next line, just trying to use the buffer API
-    reader(response)
     return response.data.decode("utf-8", "ignore")
 
 
